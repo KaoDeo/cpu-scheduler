@@ -8,7 +8,7 @@ export interface Output {
 
 export interface SchedulingAlgorithms {
   getStats: (curr: Process, prev: Process | null) => Stats | null;
-
+  onSelected?: (processes: Process[]) => Process[];
   calculateCompletionTime: (curr: Process, prev: Process) => Output;
 
   calculateWaitingTime: (curr: Process) => Output;

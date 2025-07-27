@@ -1,23 +1,27 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 
-import { AlgorithmsEnum, Process, ProcessFieldsEnum } from '../types';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { DialogContentComponent } from '../components';
 import {
+  AlgorithmFactoryService,
   ProcessQueueService,
   RandomProcessGeneratorService,
-  AlgorithmFactoryService,
 } from '../services';
-import { SchedulingAlgorithms } from '../types';
-import { DialogContentComponent } from '../components';
+import {
+  AlgorithmsEnum,
+  Process,
+  ProcessFieldsEnum,
+  SchedulingAlgorithms,
+} from '../types';
 
 @Component({
   selector: 'app-simulator',
@@ -62,27 +66,12 @@ export class SimulatorPage {
     private randomProcessGeneratorService: RandomProcessGeneratorService,
     public processQueueService: ProcessQueueService,
     private dialog: MatDialog,
-    private algorithmFactory: AlgorithmFactoryService
+    private algorithmFactory: AlgorithmFactoryService,
+    private cd: ChangeDetectorRef
   ) {
     this.algoCtlr.valueChanges.subscribe((value) => {
       if (value) {
-        this.currentAlgorithm = this.algorithmFactory.createAlgorithm(
-          value as AlgorithmsEnum
-        );
-
-        switch (value) {
-          case AlgorithmsEnum.Fcfs:
-          case AlgorithmsEnum.Rr:
-          case AlgorithmsEnum.Priority:
-            return;
-
-          case AlgorithmsEnum.Sjf:
-            const sortedProcesses = [...this.dataSource].sort(
-              (a, b) => a.burstTime - b.burstTime
-            );
-            this.processQueueService.queue.set(sortedProcesses);
-            break;
-        }
+        this.handleValueChange(value as AlgorithmsEnum);
       }
     });
   }
@@ -93,6 +82,17 @@ export class SimulatorPage {
 
   ngOnInit(): void {
     this.randomProcessGeneratorService.startGenerating();
+  }
+
+  handleValueChange(value: AlgorithmsEnum) {
+    this.currentAlgorithm = this.algorithmFactory.createAlgorithm(value);
+    if (this.currentAlgorithm.onSelected) {
+      const updatedProcesses = this.currentAlgorithm.onSelected(
+        this.dataSource
+      );
+      this.processQueueService.queue.set([...updatedProcesses]);
+      this.cd.detectChanges();
+    }
   }
 
   onActionClick(element: Process, index: number) {

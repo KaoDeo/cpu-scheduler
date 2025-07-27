@@ -4,18 +4,39 @@ import { Process, SchedulingAlgorithms } from '../types';
 @Injectable({
   providedIn: 'root',
 })
-export class RoundRobinService {
+export class RoundRobinService implements SchedulingAlgorithms {
+  quantum: number = 2;
   constructor() {}
 
-  getStats(curr: Process) {
+  onSelected(processes: Process[]): Process[] {
+    const queue = [];
+
+    for (const process of processes) {
+      if (process.burstTime > this.quantum) {
+        const remainingTime = process.burstTime - this.quantum;
+        process.burstTime = remainingTime;
+        queue.push(process);
+      } else {
+        queue.push(process);
+      }
+    }
+
+    return queue;
+  }
+
+  getStats(curr: Process, prev: Process | null) {
+    const completionTime = this.calculateCompletionTime(curr, prev);
+    const turnaroundTime = this.calculateTurnaroundTime(curr);
+    const waitingTime = this.calculateWaitingTime(curr);
+
     return {
-      completionTime: 0,
-      waitingTime: 0,
-      turnaroundTime: 0,
+      completionTime: completionTime,
+      turnaroundTime: turnaroundTime,
+      waitingTime: waitingTime,
     };
   }
 
-  calculateCompletionTime(curr: Process) {
+  calculateCompletionTime(curr: Process, prev: Process | null) {
     return {
       value: 0,
       name: '0',

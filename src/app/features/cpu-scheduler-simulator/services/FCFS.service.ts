@@ -44,6 +44,10 @@ export class FCFSService implements SchedulingAlgorithms {
     };
   }
 
+  onSelected(processes: Process[]): Process[] {
+    return processes.sort((a, b) => a.arrivalTime - b.arrivalTime);
+  }
+
   /*
     https://www.geeksforgeeks.org/dsa/first-come-first-serve-cpu-scheduling-non-preemptive/
    * Completion Time (CT) = time when process finishes

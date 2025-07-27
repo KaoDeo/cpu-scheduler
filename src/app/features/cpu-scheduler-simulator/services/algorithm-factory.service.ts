@@ -22,8 +22,8 @@ export class AlgorithmFactoryService {
         return this.fcfsService;
       case AlgorithmsEnum.Sjf:
         return this.sjfService;
-      // case AlgorithmsEnum.Rr:
-      //   return this.roundRobinService;
+      case AlgorithmsEnum.Rr:
+        return this.roundRobinService;
       // case AlgorithmsEnum.Priority:
       //   return this.prioritySchedulingService;
       default:

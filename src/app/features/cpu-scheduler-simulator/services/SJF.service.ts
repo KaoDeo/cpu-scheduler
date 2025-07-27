@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Process, SchedulingAlgorithms } from '../types';
 
 /**
- * Non-preemptive Shortest Job First CPU scheduling algorithm
  * Processes are pre-sorted by burst time (shortest first) when this algorithm is selected
  */
 @Injectable({
@@ -28,6 +27,10 @@ export class SJFService implements SchedulingAlgorithms {
   ];
 
   constructor() {}
+
+  onSelected(processes: Process[]): Process[] {
+    return [...processes].sort((a, b) => a.burstTime - b.burstTime);
+  }
 
   getStats(curr: Process, prev: Process | null) {
     const completionTime = this.calculateCompletionTime(curr, prev);
