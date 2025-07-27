@@ -11,6 +11,20 @@ export class FCFSService implements SchedulingAlgorithms {
   completeTime: number = 0;
   turnAroundTime: number = 0;
   waitingTime: number = 0;
+  formulas = [
+    {
+      name: 'Completion Time (CT)',
+      value: 'Finish time',
+    },
+    {
+      name: 'Turnaround Time (TAT)',
+      value: 'CT - Arrival Time',
+    },
+    {
+      name: 'Waiting Time (WT)',
+      value: 'TAT - Burst Time',
+    },
+  ];
   constructor() {}
 
   getStats(curr: Process, prev: Process | null) {
@@ -23,6 +37,7 @@ export class FCFSService implements SchedulingAlgorithms {
     curr.waitingTime = this.waitingTime;
 
     return {
+      formulas: this.formulas,
       completionTime: completionTime,
       turnaroundTime: turnaroundTime,
       waitingTime: waitingTime,

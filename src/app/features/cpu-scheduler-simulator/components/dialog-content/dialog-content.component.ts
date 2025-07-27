@@ -5,14 +5,27 @@ import {
   MAT_DIALOG_DATA,
   MatDialogContent,
   MatDialogTitle,
+  MatDialogModule,
 } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogActions } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-dialog-content',
   templateUrl: './dialog-content.component.html',
   styleUrls: ['./dialog-content.component.scss'],
-  imports: [MatTableModule, MatDialogContent, MatDialogTitle, MatCardModule],
+  imports: [
+    MatTableModule,
+    MatDialogContent,
+    MatDialogTitle,
+    MatCardModule,
+    MatDialogActions,
+    MatButtonModule,
+    MatDialogModule,
+    CommonModule,
+  ],
 })
 export class DialogContentComponent {
   processFieldsEnum = ProcessFieldsEnum;
