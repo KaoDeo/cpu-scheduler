@@ -1,29 +1,66 @@
 import { Injectable } from '@angular/core';
 import { Process, SchedulingAlgorithms } from '../types';
 
+/**
+ * Non-preemptive Shortest Job First CPU scheduling algorithm
+ * Processes are pre-sorted by burst time (shortest first) when this algorithm is selected
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class SJFService implements SchedulingAlgorithms {
+  completeTime: number = 0;
+  turnAroundTime: number = 0;
+  waitingTime: number = 0;
+
   constructor() {}
 
-  getStats(curr: Process) {
+  getStats(curr: Process, prev: Process | null) {
+    const completionTime = this.calculateCompletionTime(curr, prev);
+    const turnaroundTime = this.calculateTurnaroundTime(curr);
+    const waitingTime = this.calculateWaitingTime(curr);
+
+    curr.completionTime = this.completeTime;
+    curr.turnaroundTime = this.turnAroundTime;
+    curr.waitingTime = this.waitingTime;
+
     return {
-      completionTime: 0,
-      waitingTime: 0,
-      turnaroundTime: 0,
+      completionTime: completionTime,
+      turnaroundTime: turnaroundTime,
+      waitingTime: waitingTime,
     };
   }
 
-  calculateCompletionTime(curr: Process) {
-    return 0;
+  /*
+   * SJF Algorithm (processes already sorted by burst time):
+   * - Completion Time (CT) = time when process finishes
+   * - Turnaround Time (TAT) = CT - Arrival Time
+   * - Waiting Time (WT) = TAT - Burst Time
+   */
+  calculateCompletionTime(curr: Process, prev: Process | null) {
+    const prevCompletionTime = prev?.completionTime ?? 0;
+
+    const startTime = Math.max(prevCompletionTime, curr.arrivalTime);
+    this.completeTime = startTime + curr.burstTime;
+    return {
+      value: this.completeTime,
+      name: `${startTime} + ${curr.burstTime} = ${this.completeTime}`,
+    };
   }
 
   calculateWaitingTime(curr: Process) {
-    return 0;
+    this.waitingTime = this.turnAroundTime - curr.burstTime;
+    return {
+      value: this.waitingTime,
+      name: `${this.turnAroundTime} - ${curr.burstTime} = ${this.waitingTime}`,
+    };
   }
 
   calculateTurnaroundTime(curr: Process) {
-    return 0;
+    this.turnAroundTime = this.completeTime - curr.arrivalTime;
+    return {
+      value: this.turnAroundTime,
+      name: `${this.completeTime} - ${curr.arrivalTime} = ${this.turnAroundTime}`,
+    };
   }
 }

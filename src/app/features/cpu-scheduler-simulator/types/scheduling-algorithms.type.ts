@@ -1,12 +1,17 @@
 import { Process } from './process.type';
 import { Stats } from './stats.type';
 
+export interface Output {
+  value: number;
+  name: string;
+}
+
 export interface SchedulingAlgorithms {
   getStats: (curr: Process, prev: Process | null) => Stats | null;
 
-  calculateCompletionTime: (curr: Process, prev: Process) => number;
+  calculateCompletionTime: (curr: Process, prev: Process) => Output;
 
-  calculateWaitingTime: (curr: Process) => number;
+  calculateWaitingTime: (curr: Process) => Output;
 
-  calculateTurnaroundTime: (curr: Process) => number;
+  calculateTurnaroundTime: (curr: Process) => Output;
 }

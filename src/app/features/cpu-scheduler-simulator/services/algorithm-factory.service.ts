@@ -22,10 +22,10 @@ export class AlgorithmFactoryService {
         return this.fcfsService;
       case AlgorithmsEnum.Sjf:
         return this.sjfService;
-      case AlgorithmsEnum.Rr:
-        return this.roundRobinService;
-      case AlgorithmsEnum.Priority:
-        return this.prioritySchedulingService;
+      // case AlgorithmsEnum.Rr:
+      //   return this.roundRobinService;
+      // case AlgorithmsEnum.Priority:
+      //   return this.prioritySchedulingService;
       default:
         throw new Error(`Unsupported algorithm type: ${algorithmType}`);
     }

@@ -23,5 +23,7 @@ export class DialogContentComponent {
     ProcessFieldsEnum.TurnaroundTime,
   ];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { stats: Stats }) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { stats: Stats }) {
+    console.log(this.data);
+  }
 }

@@ -4,7 +4,7 @@ import { Process, SchedulingAlgorithms } from '../types';
 @Injectable({
   providedIn: 'root',
 })
-export class PrioritySchedulingService implements SchedulingAlgorithms {
+export class PrioritySchedulingService {
   constructor() {}
 
   getStats(curr: Process) {
@@ -16,14 +16,23 @@ export class PrioritySchedulingService implements SchedulingAlgorithms {
   }
 
   calculateCompletionTime(curr: Process) {
-    return 0;
+    return {
+      value: 0,
+      name: '0',
+    };
   }
 
   calculateWaitingTime(curr: Process) {
-    return 0;
+    return {
+      value: 0,
+      name: '0',
+    };
   }
 
   calculateTurnaroundTime(curr: Process) {
-    return 0;
+    return {
+      value: 0,
+      name: '0',
+    };
   }
 }

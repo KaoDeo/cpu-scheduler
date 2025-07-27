@@ -69,6 +69,20 @@ export class SimulatorPage {
         this.currentAlgorithm = this.algorithmFactory.createAlgorithm(
           value as AlgorithmsEnum
         );
+
+        switch (value) {
+          case AlgorithmsEnum.Fcfs:
+          case AlgorithmsEnum.Rr:
+          case AlgorithmsEnum.Priority:
+            return;
+
+          case AlgorithmsEnum.Sjf:
+            const sortedProcesses = [...this.dataSource].sort(
+              (a, b) => a.burstTime - b.burstTime
+            );
+            this.processQueueService.queue.set(sortedProcesses);
+            break;
+        }
       }
     });
   }

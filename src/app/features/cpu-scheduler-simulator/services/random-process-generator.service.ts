@@ -19,13 +19,14 @@ export class RandomProcessGeneratorService {
   }
 
   startGenerating(): void {
+    const maxProcesses = 5;
     const interval = Math.floor(Math.random() * 1000) + 1000;
 
-    this.intervalId = setInterval(() => {
+    while (this.count < maxProcesses) {
       const process = this.generateRandomProcess(this.count);
       this.processQueueService.add(process);
       this.count++;
-    }, interval);
+    }
   }
 
   stopGenerating(): void {
@@ -33,13 +34,10 @@ export class RandomProcessGeneratorService {
   }
 
   private generateRandomProcess(i: number): Process {
-    // Generate arrival times that can create waiting scenarios
-    const arrivalTime = i < 3 ? 0 : Math.floor(Math.random() * 5);
-
     return {
       id: uuidv4(),
       name: `Process ${i}`,
-      arrivalTime: arrivalTime,
+      arrivalTime: i,
       burstTime: Math.round(Math.random() * 10) + 1,
       priority: Math.round(Math.random() * 10),
       completionTime: 0,
