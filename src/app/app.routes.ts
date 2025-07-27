@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { SimulatorPage } from './pages';
+import { SimulatorPage } from './features';
 
 export const routes: Routes = [
   {

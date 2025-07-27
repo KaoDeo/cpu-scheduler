@@ -33,11 +33,14 @@ export class RandomProcessGeneratorService {
   }
 
   private generateRandomProcess(i: number): Process {
+    // Generate arrival times that can create waiting scenarios
+    const arrivalTime = i < 3 ? 0 : Math.floor(Math.random() * 5);
+
     return {
       id: uuidv4(),
       name: `Process ${i}`,
-      arrivalTime: Math.round(Math.random() * 10),
-      burstTime: Math.round(Math.random() * 10),
+      arrivalTime: arrivalTime,
+      burstTime: Math.round(Math.random() * 10) + 1,
       priority: Math.round(Math.random() * 10),
       completionTime: 0,
       waitingTime: 0,
