@@ -89,6 +89,7 @@ export class PrioritySchedulingService implements SchedulingAlgorithms {
     };
   }
 
+  // todo: waiting time is not correctly culced
   calculateWaitingTime(curr: Process) {
     this.waitingTime = this.turnAroundTime - curr.burstTime;
 
