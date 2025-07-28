@@ -10,6 +10,7 @@ export interface Process {
   waitingTime: number;
   turnaroundTime: number;
   state: ProcessState;
+  quantum: number;
   pause?(): void;
   resume?(): void;
   cancel?(): void;

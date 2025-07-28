@@ -7,4 +7,6 @@ export enum ProcessFieldsEnum {
   CompletionTime = 'completionTime',
   WaitingTime = 'waitingTime',
   TurnaroundTime = 'turnaroundTime',
+  Quantum = 'quantum',
+  State = 'state',
 }

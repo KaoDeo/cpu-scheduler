@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
+import { MatChipsModule } from '@angular/material/chips';
 import { DialogContentComponent } from '../components';
 import {
   AlgorithmFactoryService,
@@ -36,6 +37,7 @@ import {
     MatDividerModule,
     MatButtonModule,
     MatDialogModule,
+    MatChipsModule,
     ReactiveFormsModule,
     CommonModule,
   ],
@@ -48,8 +50,20 @@ export class SimulatorPage {
     ProcessFieldsEnum.Name,
     ProcessFieldsEnum.ArrivalTime,
     ProcessFieldsEnum.BurstTime,
+    ProcessFieldsEnum.Quantum,
     ProcessFieldsEnum.Priority,
+    ProcessFieldsEnum.State,
     'action',
+  ];
+
+  execDisplayedColumns = [
+    ProcessFieldsEnum.Id,
+    ProcessFieldsEnum.Name,
+    ProcessFieldsEnum.ArrivalTime,
+    ProcessFieldsEnum.BurstTime,
+    ProcessFieldsEnum.Quantum,
+    ProcessFieldsEnum.Priority,
+    ProcessFieldsEnum.State,
   ];
 
   algorithms = [
@@ -76,6 +90,8 @@ export class SimulatorPage {
     });
   }
 
+  execQueue = signal<Process[]>([]);
+
   get dataSource() {
     return this.processQueueService.queue();
   }
@@ -90,7 +106,8 @@ export class SimulatorPage {
       const updatedProcesses = this.currentAlgorithm.onSelected(
         this.dataSource
       );
-      this.processQueueService.queue.set([...updatedProcesses]);
+
+      this.execQueue.set([...updatedProcesses]);
       this.cd.detectChanges();
     }
   }

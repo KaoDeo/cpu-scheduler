@@ -11,22 +11,45 @@ export class RandomProcessGeneratorService {
   intervalId: number = 0;
   constructor(private processQueueService: ProcessQueueService) {}
 
-  generateProcesses(count: number): void {
-    for (let i = 0; i < count; i++) {
-      const process = this.generateRandomProcess(i);
-      this.processQueueService.add(process);
-    }
-  }
-
   startGenerating(): void {
-    const maxProcesses = 5;
-    const interval = Math.floor(Math.random() * 1000) + 1000;
+    const maxProcesses = 2;
 
-    while (this.count < maxProcesses) {
-      const process = this.generateRandomProcess(this.count);
+    const processes = [
+      {
+        id: uuidv4(),
+        name: `Process 1`,
+        arrivalTime: 0,
+        burstTime: 5,
+        completionTime: 0,
+        waitingTime: 0,
+        turnaroundTime: 0,
+        state: ProcessState.New,
+        quantum: 0,
+        priority: Math.round(Math.random() * 10),
+      },
+      {
+        id: uuidv4(),
+        name: `Process 2`,
+        arrivalTime: 4,
+        burstTime: 2,
+        completionTime: 0,
+        waitingTime: 0,
+        turnaroundTime: 0,
+        state: ProcessState.New,
+        quantum: 0,
+        priority: Math.round(Math.random() * 10),
+      },
+    ];
+
+    for (const process of processes) {
       this.processQueueService.add(process);
-      this.count++;
     }
+
+    // while (this.count < maxProcesses) {
+    //   const process = this.generateRandomProcess(this.count);
+    //   this.processQueueService.add(process);
+    //   this.count++;
+    // }
   }
 
   stopGenerating(): void {
@@ -44,6 +67,7 @@ export class RandomProcessGeneratorService {
       waitingTime: 0,
       turnaroundTime: 0,
       state: ProcessState.New,
+      quantum: 0,
     };
   }
 }

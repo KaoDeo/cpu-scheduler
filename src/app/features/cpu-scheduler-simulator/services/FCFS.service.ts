@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Process, SchedulingAlgorithms } from '../types';
 
-/**
- * Non-preemptive CPU scheduling algorithm (A running process won't be interrupted if a new process arrives)
- */
 @Injectable({
   providedIn: 'root',
 })
